@@ -5,6 +5,11 @@ use Illuminate\Support\Facades\Storage;
 use App\Http\Controllers\homeController;
 use App\Http\Controllers\PostController;
 use Illuminate\Support\Facades\Response;
+// localización con php artisan lang:publish saca las diferentes respuestas de la carpeta lang
+// si copias la carpeta en y le cambias el nombre a es puedes cambiar los idiomas bien, pero mejor es usar el paquete laravel langs
+// también se puede hacer las traducciones con un json como es.json
+// ejem: {{__("client")}} se busca con {{__{{"client"}}}}
+
 // para cuando en una ruta se usa {valor?} que sea opcional se usa el signo ? y a la hora de usarlo como parámetro si no viene con nada devuelve null ejem: public function store($post, $categoria = null)
 // si no se usa el name para nombrar las rutas se usa el nombre de la uri ejem: {{/posts}} en vez de {{/posts/index}} o {{route('posts.index')}}
 Route::get('/', homeController::class)->name('home');
