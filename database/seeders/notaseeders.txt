@@ -1,0 +1,19 @@
+// User::factory(10)->create();
+
+        User::factory()->create([
+            'name' => 'Test User',
+            'email' => 'test@example.com',
+        ]);
+
+//Para ejecutar el seed
+php artisan db:seed
+
+//para Ejecutar el migrate y el seed
+php artisan migrate:fresh --seed
+
+//usar factory para hacer varios registro y usar faker para poner aleatorios valores
+
+//para ver las rutas 
+php artisan r:l
+
+//hay que agregar un slug a los datos de las base de datos para asi lograr ponerle el Route Model Binding en la url

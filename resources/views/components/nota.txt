@@ -1,0 +1,14 @@
+
+
+
+{{-- <div class="p-4 mb-4 text-sm text-blue-800 rounded-lg bg-blue-50 dark:bg-gray-800 dark:text-blue-400" role="alert">
+    <span class="font-medium">
+        {{ $title ?? 'info alert' }}
+    </span>
+    {{ $slot }}
+</div> --}}
+{{-- $slot funciona para definir donde se va a colocar el contenido variable desde la información general la otra manera es el slot con nombre como el title que se invoca con <x-slot name=title> para que sea opcional se usan operadores ternarios $title ?? 'info alert'otra manera es con parámetros con @props('type')}}
+
+la otra manera de pasar atributos sin usar props, es pasar la variable normal como parámetro y del lado del componente se agrega esto {{$attributes}} con {{$attributes->marge()}} se crea una class donde se agrega los valores del tailwind, se puede concatenar con el dot ( . ) {{$attributes->marge('class => 'p-4 mb-4 text-sm text-blue-800 '  . $class)}}
+
+el component normal que uso es un componente anónimo, obligatoriamente para usar un component de una class hay que usar el comando 'php artisan make:component nombre', con un componente de class se usa para separar la lógica de la view.

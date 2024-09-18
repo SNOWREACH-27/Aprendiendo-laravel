@@ -1,0 +1,16 @@
+usando schema::create se crea una nueva tabla (blueprint $table)
+
+con php artisan migrate:rollback, este comando en todas las migraciones va a los diferentes funciones down de todas las migraciones para aplicar lo puesto hay, en general funciona para control z todo 
+
+la tabla migrations es la que guarda el historial de migraciones
+
+con  php artisan make:migrate nombre, se crea una nueva migración.
+
+con  php artisan migrate:refresh, ejecuta todas los down y luego los up de las migraciones.
+
+para actualizar una tabla sin eliminar los datos de otra tabla php artisan make:migrate add_avatar_to_users_tabla, el avatar es lo que se le va a agregar a la tabla de users
+
+$table->string('avatar')->after('email'), after es para ponerlo antes de de la columna seleccionada.
+
+con  php artisan make:migrate create_nombre_table, se crea la migración y la tabla se le pone el nombre y lista con la estructura y con el método down también lo hace con drop.
+

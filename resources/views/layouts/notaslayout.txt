@@ -1,0 +1,6 @@
+para poner donde sera remplazado el contenido por uno variable en la plantillas se usa el @yield('content') y se llama con @extends('layouts.app') y para ubicar el contenido se usa el @section('content') @endsection
+
+
+donde ponga el yield puede cambiar los valores de manera variable por ejemplo <title>@yield('title')</title> y se cambia con el extends y section de la misma manera que el otro, se puede declarar también en una sola linea @section('title', 'home').
+
+con @stack('name') y @push('name') funcionan de la misma manera que los otros pero es mas táctico, pero la diferencia mas grande es que con un stack puedes definir mas de uno no como los otros, los push se suman mediante los vas utilizando.
