@@ -1,10 +1,62 @@
 <?php
-use App\Models\Post;
+
+use App\Models\User;
+use App\Models\Post1;
+use App\Models\CommentPost;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Storage;
 use App\Http\Controllers\homeController;
 use App\Http\Controllers\PostController;
 use Illuminate\Support\Facades\Response;
+
+Route::get('/pdf', function () {
+    $data = []; // Datos para pasar a la vista, si los hay
+
+    $pdf = Pdf::loadView('vistapdf', $data);
+    $pdf->setPaper('A4', 'portrait'); // Ajusta el tamaño del papel y la orientación
+
+    return $pdf->stream('archivo.pdf'); // STREAM Para ver el PDF en el navegador, o download() para descargarlo
+});
+
+
+
+Route::get('/fetch', function () {
+    try {
+        $response = Http::get('https://pokeapi.co/api/v2/pokemon/?limit=600'); // Ajusta el límite según lo que necesites
+        $pokemons = [];
+        foreach ($response->json()['results'] as $pokemon) {
+            $pokemons[] = $pokemon['name'];
+        }
+        return response()->json($pokemons, 200);
+    } catch (\Exception $e) {
+        return response()->json(['error' => 'Ocurrió un error inesperado'], 500);
+    }
+});
+
+
+Route::get('/prueba', function () {
+
+    $post = Post1::find(1);
+    $post->comments()->create([
+        'content' => 'un comentario de prueba se a creado'
+    ]);
+
+    // $buenas = User::create([
+    //     'name' => 'prueba',
+    //     'email' => 'prueba@gmail.com',
+    //     'password' => bcrypt('12345'),
+    // ]);
+    // $buenas = Phone::create([
+    //     'number' => '12345622789',
+    //     'user_id' => 12
+    // ]);
+    // $buenas = User::where('id',12)->with('phone')->first();
+    // return $buenas;
+});
+
+
+
 // localización con php artisan lang:publish saca las diferentes respuestas de la carpeta lang
 // si copias la carpeta en y le cambias el nombre a es puedes cambiar los idiomas bien, pero mejor es usar el paquete laravel langs
 // también se puede hacer las traducciones con un json como es.json

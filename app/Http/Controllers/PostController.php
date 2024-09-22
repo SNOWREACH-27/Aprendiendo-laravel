@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Post;
 use \Illuminate\Support\Str;
+use App\Mail\PostCreateMail;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 use App\Http\Requests\StorePostRequest;
 
 class PostController extends Controller
@@ -18,8 +20,15 @@ class PostController extends Controller
     public function index()
     {
         // ->paginate(5) es el número de registros que se mostrará por página.
-        $posts = Post::orderBy('created_at', 'desc')->paginate(10);
-        return view('posts.index')->with('posts', $posts);
+
+        // mensaje de flash
+        session()->flash('status', 'Post creado con éxito');
+
+
+        $posts = Post::orderBy('created_at', 
+        'desc')->paginate(10);
+        return view('posts.index')->with
+        ('posts', $posts);
     }
 
     public function create()
@@ -37,12 +46,15 @@ class PostController extends Controller
     // al crear el StorePostRequest.php para las validaciones que vienen de laravel ya no se usa el Request $request ahora se usa el StorePostRequest $request
     public function store(StorePostRequest $request)
     {
-        Post::create(attributes: [
+        $post = Post::create(attributes: [
             'title' => $request->title,
             'body' => $request->body,
             'slug' => Str::slug($request->title) . '-' . substr(Str::uuid()->toString(), 0, 8),
             'published_at' => now()
         ]);
+        // mando la info del post
+        Mail::to("{$post->title}@gmail.com")->send(new PostCreateMail($post));
+
         // unique:posts,slug,{{$posts->id}} busca en la base de datos si el valor a poner es único.
         // Busca en la tabla 'posts' si el valor de la columna 'slug' es igual al valor que se va a poner.
         // Si se pone el tercer valor, se excluye ese registro de la búsqueda, en este caso el registro con el id que se le pasa como parámetro.

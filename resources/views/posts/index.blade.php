@@ -1,4 +1,5 @@
 <x-app-layout title="Pagina de Post index" content-Information="Post index">
+    {{-- TAMBIEN SI PONGO :LARAVEL VA ENTENDER QUE ES PHP --}}
     <h1 class="text-3xl font-bold mb-2 text-red-600">Lista de posts</h1>
     <a href="/posts/create" class="text-blue-500 mb-3 hover:text-blue-700 hover:underline">Crear un nuevo Post</a>
     <div class="overflow-x-auto">
@@ -36,6 +37,11 @@
             </tbody>
         </table>
     </div>
+    @session('status')
+        <div>
+            {{ $value }}
+        </div>
+    @endsession
     <div class="mt-4">
         {{ $posts->onEachSide(5)->links('pagination::tailwind') }}
     </div>

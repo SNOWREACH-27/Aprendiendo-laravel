@@ -3,22 +3,23 @@
 namespace App\Mail;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
+use Illuminate\Mail\Mailables\Address;
 use Illuminate\Mail\Mailables\Content;
-use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Mail\Mailables\Envelope;
+use Illuminate\Contracts\Queue\ShouldQueue;
 
-class PoslCreateMail extends Mailable
+class PostCreateMail extends Mailable
 {
     use Queueable, SerializesModels;
-
+    public $post;
     /**
      * Create a new message instance.
      */
-    public function __construct()
+    public function __construct($post)
     {
-        //
+        $this->post = $post;
     }
 
     /**
@@ -27,7 +28,10 @@ class PoslCreateMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Posl Create Mail',
+            // asunto del correo
+            subject: 'Post por publicar',
+            // remitente del correo
+            from: new Address('admin@franc.com', 'Francisco Rojas'),
         );
     }
 
@@ -37,7 +41,8 @@ class PoslCreateMail extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'view.name',
+            markdown: 'emails.post-create',
+            // view: 'emails.post-create',
         );
     }
 
