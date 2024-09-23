@@ -2,14 +2,17 @@
 
 use App\Models\User;
 use App\Models\Post1;
-use App\Models\CommentPost;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\homeController;
 use App\Http\Controllers\PostController;
 use Illuminate\Support\Facades\Response;
+use Illuminate\Validation\ValidationException;
 
+// cambiar la ruta principal
+// php artisan key:regenerate sirve para cambiar la llave de la aplicación
 Route::get('/pdf', function () {
     $data = []; // Datos para pasar a la vista, si los hay
 
@@ -18,8 +21,6 @@ Route::get('/pdf', function () {
 
     return $pdf->stream('archivo.pdf'); // STREAM Para ver el PDF en el navegador, o download() para descargarlo
 });
-
-
 
 Route::get('/fetch', function () {
     try {
@@ -33,6 +34,59 @@ Route::get('/fetch', function () {
         return response()->json(['error' => 'Ocurrió un error inesperado'], 500);
     }
 });
+// -> gets de las rutas login y register
+Route::get("/login", function () {
+    return response()->view('login.login');
+})->name('login');
+Route::get("/register", function () {
+    return response()->view('register.register');
+})->name('register');
+
+// -> post de las rutas login y register
+Route::post("/login", function () {
+    // en RouteServiceProvider en la const home para poner la route donde te va a mandar si estas logged
+    // session en expire_on_close se se pone si se cierra la sesión al cerrar el navegador
+    // cambiar el driver en producción
+    // en session en lifetime, es el tiempo de vida de una session también se puede cambiar en config/session.php o en las .env
+    // filled se encarga de validar que el campo no este vacío y que si viene el checkbox del fronted con "on" lo pase a true y si no viene lo pase a false
+    $credentials = request()->validate(
+        // unique para único y exist para existe
+        [
+            'email' => ['required', 'email', 'unique:users,email'],
+            'password' => ['required'],
+        ],
+    );
+    $remember = request()->filled('remember');
+
+    //  el segundo valor del Auth es para el remember me
+    if (Auth::attempt($credentials, $remember)) {
+        // session fixation -> refrescar el token y session
+        request()->session()->regenerate();
+        // -> intended() sirve para si el usuario antes intento acceder a una route protegida, luego del log, se dirigirá a ella
+        return view('home');
+    }    // otra manera de poner los mensajes de validation
+    throw ValidationException::withMessages([
+        // mensaje de que el email o la password son incorrectos
+        'email' => __('auth.failed'),
+    ]);
+})->name('login.login');
+
+Route::post("/register", function () {
+    User::create([
+        'name' => 'prueba',
+        'email' => request('email'),
+        'password' => bcrypt(request('password')),
+    ]);
+    return redirect('/login');
+    // Auth::login($user); // Iniciar sesión automáticamente
+
+})->name('register.register');
+
+Route::post('/logout', function () {
+    Auth::logout();  // Cierra la sesión del usuario
+    request()->session()->regenerateToken();
+    return redirect('/');  // Redirige al usuario a la página de inicio u otra ruta
+})->name('logout');
 
 
 Route::get('/prueba', function () {
@@ -64,6 +118,7 @@ Route::get('/prueba', function () {
 
 // para cuando en una ruta se usa {valor?} que sea opcional se usa el signo ? y a la hora de usarlo como parámetro si no viene con nada devuelve null ejem: public function store($post, $categoria = null)
 // si no se usa el name para nombrar las rutas se usa el nombre de la uri ejem: {{/posts}} en vez de {{/posts/index}} o {{route('posts.index')}}
+
 Route::get('/', homeController::class)->name('home');
 
 // usando el ->except() para restringir las rutas que se van a usar, el only() para restringir que solo las rutas que se le pase se usen, el names() para darle un nombre a las rutas, con parameters() para darle un parámetro a las rutas, con apiresource() para darle un controlador a las rutas.
