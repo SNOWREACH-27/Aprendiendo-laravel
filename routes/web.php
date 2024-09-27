@@ -11,6 +11,11 @@ use App\Http\Controllers\PostController;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Validation\ValidationException;
 
+Route::get('/a',function(){
+    return Post1::find(1)->comment();
+});
+
+
 // cambiar la ruta principal
 // php artisan key:regenerate sirve para cambiar la llave de la aplicación
 Route::get('/pdf', function () {
@@ -18,7 +23,7 @@ Route::get('/pdf', function () {
 
     $pdf = Pdf::loadView('vistapdf', $data);
     $pdf->setPaper('A4', 'portrait'); // Ajusta el tamaño del papel y la orientación
-
+ 
     return $pdf->stream('archivo.pdf'); // STREAM Para ver el PDF en el navegador, o download() para descargarlo
 });
 
