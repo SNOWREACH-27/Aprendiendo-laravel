@@ -1,2 +1,0 @@
-para crear un request se usa
-php artisan make:request StorePostRequest

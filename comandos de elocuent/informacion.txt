@@ -14,3 +14,37 @@ $table->string('avatar')->after('email'), after es para ponerlo antes de de la c
 
 con  php artisan make:migrate create_nombre_table, se crea la migración y la tabla se le pone el nombre y lista con la estructura y con el método down también lo hace con drop.
 
+para crear un request se usa
+php artisan make:request StorePostRequest
+
+ php artisan make:mail PoslCreateMail
+
+para crear emails hay que crear una carpeta en views llamada emails y hay se guardaran las vistas de los emails osea el content
+
+para enviar email hay que llamar al paquete email
+php artisan vendor:publish --tag=laravel-mail
+
+esto sirve para usar una vista en markdown de laravel
+
+<x-mail::message>
+
+</x-mail::message>
+// User::factory(10)->create();
+
+        User::factory()->create([
+            'name' => 'Test User',
+            'email' => 'test@example.com',
+        ]);
+
+//Para ejecutar el seed
+php artisan db:seed
+
+//para Ejecutar el migrate y el seed
+php artisan migrate:fresh --seed
+
+//usar factory para hacer varios registro y usar faker para poner aleatorios valores
+
+//para ver las rutas 
+php artisan r:l
+
+//hay que agregar un slug a los datos de las base de datos para asi lograr ponerle el Route Model Binding en la url
