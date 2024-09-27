@@ -12,12 +12,12 @@
                 @method('POST')
                 <label for="email" class="block">
                     <p class="text-sm font-medium text-gray-700">Email</p>
-                    <input type="text" name="email" id="email" placeholder="email" autofocus
+                    <input type="email" name="email" id="email" placeholder="email" autofocus
                         class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm">
                 </label>
                 <label for="password" class="block">
                     <p class="text-sm font-medium text-gray-700">Contraseña</p>
-                    <input type="password" name="password" id="password" placeholder="123456789"
+                    <input type="password" minlength="8" name="password" id="password" placeholder="123456789"
                         class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm">
                 </label>
                 <div class="flex-wrap items-center justify-between">

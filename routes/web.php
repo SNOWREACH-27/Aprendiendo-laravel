@@ -145,6 +145,7 @@ Route::get('/video', function () {
 
     return $response;
 });
+
 Route::get('/videos', function () {
     return view('video
     ');
